@@ -1,0 +1,14 @@
+#3PAR Storage System Properties
+#storage System IP "172.168.100.12"
+storage_system_ip: "10.3.0.116"
+storage_system_username: "3paradm"
+storage_system_password: "3pardata"
+#source_system_name: "A7200cR4U15" 
+
+
+# 3PAR Storage (target System Properties for RCOPY Operations
+#target_storage_system_ip "172.168.100.16"
+target_storage_system_ip: "xx.xx.xx.xx"
+target_storage_system_username: "admin"
+target_storage_system_password: "password"
+#target_system_name: "A8200R1U15" 

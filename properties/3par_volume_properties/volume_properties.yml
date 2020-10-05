@@ -1,0 +1,17 @@
+#3PAR Default Volume Properties
+
+volume_name: "ansible_demo_volume"
+cpg: "SSD_r6"
+size: 5
+updated_size: 5
+size_unit: 'GiB'
+wait_for_task_to_end: True
+new_name: "ansible_demo_volume_renamed"
+snap_cpg: "SSD_r6"
+autolun: False
+lunid: 110
+
+#RCOPY Volume Properties
+
+source_volume_name: "ansible_demo_volume_source"
+target_volume_name: "ansible_demo_volume_target"

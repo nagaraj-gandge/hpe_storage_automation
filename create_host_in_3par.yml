@@ -1,0 +1,50 @@
+- hosts: localhost
+  vars:
+    - host_wwns_map_input_data: {}
+
+  tasks:
+    
+    - name: Load Storage System Properties
+      include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
+
+    - name: Load Volume Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      
+    - name: Load Host Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+
+    - name: Load VCenter Vars
+      include_vars: 'properties/vmware_properties/vcenter_server_properties.yml'
+
+      #environment:
+       # no_proxy: "{{storage_system_ip}}"
+
+    - set_fact:
+        host_wwns_map_input_data: >
+                                     {
+                                       "host_wwpns_map": [
+                                         {
+                                              "name": "ANSIBLE_Test_HOST_ESXi",
+                                              "wwpns": [
+                                                 "51402EC0124FE123",
+                                                 "51402EC0124FE12A"
+                                               ]
+                                          }
+                                        ]
+                                       }
+
+    - set_fact:
+        host_wwns_map_data: "{{ host_wwns_map_input_data | from_json }}"
+
+    - debug:
+        msg: "{{ host_wwns_map_data.host_wwpns_map }}"
+
+    - name: Create Host "{{ item.name }}"
+      hpe3par_host:
+        storage_system_ip: "{{ storage_system_ip }}"
+        storage_system_username: "{{ storage_system_username }}"
+        storage_system_password: "{{ storage_system_password }}"
+        state: present
+        host_name: "{{ item.name }}"
+        host_fc_wwns: "{{ item.wwpns }}"
+      loop: "{{ host_wwns_map_data.host_wwpns_map }}"

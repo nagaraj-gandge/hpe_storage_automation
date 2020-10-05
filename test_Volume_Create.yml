@@ -1,0 +1,20 @@
+- hosts: localhost
+  tasks:
+  
+    - name: Load Volume and Host Vars
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      
+      environment:
+        no_proxy="10.3.0.116"
+
+    - name: Create Volume "ansible_demo"
+      hpe3par_volume:
+        storage_system_ip="10.3.0.116"
+        storage_system_username="3paradm"
+        storage_system_password="3pardata"
+        state=present
+        volume_name="ansible_demo"
+        cpg="SSD_r6"
+        size=2
+        size_unit="GiB"
+        snap_cpg="SSD_r6"

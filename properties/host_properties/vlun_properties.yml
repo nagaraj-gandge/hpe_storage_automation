@@ -1,0 +1,4 @@
+vlun_host_name: "SGH845VTZ8_ESXi"
+vlun_volume_name: "my_ansible_volume" 
+lunid: 10
+autolun: False

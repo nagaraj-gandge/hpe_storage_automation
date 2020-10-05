@@ -1,0 +1,8 @@
+vcenter_hostname: "10.10.10.1"
+vcenter_user: "administrator@vsphere.local"
+vcenter_pass: "Password"
+datastore_name: "ansible_demo_datastore"
+datacenter_name: "GSE-Datacenter"
+datastore_type: "vmfs"
+hostname: "SGH845VTZ8_ESXi"
+esxi_hostname: "10.3.26.218"

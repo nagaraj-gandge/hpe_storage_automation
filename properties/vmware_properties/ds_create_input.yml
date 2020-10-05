@@ -1,0 +1,18 @@
+# Storage Information
+storage_system_ip: "172.168.100.12"
+storage_system_username: "3paradm"
+storage_system_password: "3pardata"
+storage_cluster: "STORAGE_HOSTSET_CLUSTER"
+cpg: "SSD_r6"
+snap_cpg: "SSD_r6"
+
+#volume_name: "ansible_demo_volume"     # Name of the volume in storage
+#size: "10"                           # Size of the volume
+#size_unit: "GiB"                     # Size Unit
+
+# vCenter Information
+vcenter_hostname: "10.3.26.12"
+vcenter_username: "administrator@v0026.local"
+vcenter_password: "Password@123"
+esxi_hostname: "10.3.26.218"
+vcenter_datastore: "ansible_demo_datastore"

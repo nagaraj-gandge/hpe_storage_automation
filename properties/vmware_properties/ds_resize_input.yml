@@ -1,0 +1,13 @@
+# Storage Information
+storage_system_ip: "172.168.100.12"
+storage_system_username: "3paradm"
+storage_system_password: "3pardata"
+#size: "15"
+#size_unit: "GiB"
+
+# vCenter Information
+vcenter_hostname: "10.3.26.12"
+vcenter_username: "administrator@v0026.local"
+vcenter_password: "Password@123"
+esxi_hostname: "10.3.26.218"
+vcenter_datastore: "ansible_demo_datastore"

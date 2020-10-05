@@ -1,0 +1,23 @@
+- hosts: localhost
+  tasks:
+  
+    #- name: Load Storage System Properties 
+    #  include_vars: 'properties/storage_system_properties/storage_system_properties.yml'
+  
+    - name: Load Volume Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      
+      #environment:
+       # no_proxy: "10.3.0.116"
+
+    - name: Create Volume "{{ volume_name }}"
+      hpe3par_volume:
+        storage_system_ip: "{{ storage_system_ip }}"
+        storage_system_username: "{{ storage_system_username }}"
+        storage_system_password: "{{ storage_system_password }}"
+        state: present
+        volume_name: "{{ volume_name }}"
+        cpg: "{{ cpg }}"
+        size: "{{ size }}"
+        size_unit: "{{ size_unit }}"
+        snap_cpg: "{{ snap_cpg }}"

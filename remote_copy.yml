@@ -1,0 +1,126 @@
+- hosts: localhost
+  tasks:
+  - name: Load Storage System Vars
+    include_vars: 'properties/storage_system_properties.yml'
+
+  - name: Create volume "{{ source_volume_name }}_1" on source "{{ storage_system_ip }}"
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: "{{ source_volume_name }}_1"
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"
+
+  - name: Create volume "{{ source_volume_name }}_2" on source "{{ storage_system_ip }}"
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: "{{ source_volume_name }}_2"
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"   
+
+  - name: Create volume "{{ target_volume_name }}_1" on target "{{ target_storage_system_ip }}"
+    hpe3par_volume:
+      storage_system_ip: "{{ target_storage_system_ip }}"
+      storage_system_password: "{{ target_storage_system_username }}"
+      storage_system_username: "{{ target_storage_system_password }}"
+      state: present
+      volume_name: "{{ target_volume_name }}_1"
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"  
+
+  - name: Create volume "{{ target_volume_name }}_2" on target "{{ target_storage_system_ip }}"
+    hpe3par_volume:
+      storage_system_ip: "{{ target_storage_system_ip }}"
+      storage_system_password: "{{ target_storage_system_username }}"
+      storage_system_username: "{{ target_storage_system_password }}"
+      state: present
+      volume_name: "{{ target_volume_name }}_2"
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"          
+
+ 
+  - name: Create Remote Copy Group "{{ rcg_name }}"
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      remote_copy_group_name: "{{ rcg_name }}"
+      remote_copy_targets:
+      - target_name: "{{ target_system_name}}"
+        target_mode: sync
+       
+  - name: Add volume to remote copy group
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: add_volume
+      remote_copy_group_name: "{{ rcg_name }}"
+      volume_name: demo_volume_tanika_sa
+      admit_volume_targets:
+      - target_name: "{{ target_system_name}}"
+        sec_volume_name: demo_volume_tanika_sa
+        
+  - name: Add volume to remote copy group "{{ rcg_name }}"
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: add_volume
+      remote_copy_group_name: tanika_rcg
+      volume_name: demo_volume_tanika_sb
+      admit_volume_targets:
+      - target_name: "{{ target_system_name}}"
+        sec_volume_name: demo_volume_tanika_sb
+
+  - name: admit Remote Copy target
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ storage_system_ip }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: admit_target
+      remote_copy_group_name: "{{ rcg_name }}"
+      target_name: A8200R1U15
+      local_remote_volume_pair_list:
+      - sourceVolumeName: demo_volume_tanika_sa
+        targetVolumeName: demo_volume_tanika_ta
+      - sourceVolumeName: demo_volume_tanika_sa
+        targetVolumeName: demo_volume_tanika_tb
+      target_mode: periodic
+
+  - name: remote copy group status
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ target_storage_system_ip }}"
+      storage_system_password: "{{ target_storage_system_username }}"
+      storage_system_username: "{{ target_storage_system_password }}"
+      state: remote_copy_status
+      remote_copy_group_name: "{{ rcg_name }}"
+    register: result
+
+  - debug:
+      msg: "Priniting the Remote Copy 'Status' Before the Start Opetation"
+      msg: "{{ result.output.remote_copy_sync_status}}"
+
+      
+  - name: Start remote copy
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ target_storage_system_ip }}"
+      storage_system_password: "{{ target_storage_system_username }}"
+      storage_system_username: "{{ target_storage_system_password }}"
+      remote_copy_group_name: "{{ rcg_name }}"
+      state: start
+  

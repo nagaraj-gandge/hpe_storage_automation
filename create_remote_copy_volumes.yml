@@ -1,0 +1,65 @@
+- hosts: localhost
+  tasks:
+  - name: Load Storage System Properties
+      include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
+
+    - name: Load Volume Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      
+    - name: Load Host Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+
+    - name: Load VCenter Vars
+      include_vars: 'properties/vmware_properties/vcenter_server_properties.yml'
+
+      #environment:
+       # no_proxy: "{{storage_system_ip}}"
+
+  - name: Create volume on source demo_volume_Source_1
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip1 }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: demo_volume_Source_1
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"
+
+  - name: Create volume on source demo_volume_Source_2
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip1 }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: demo_volume_source_2
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"     
+
+  - name: Create volume on target demo_volume_target_1
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip2 }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: demo_volume_target_1
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"
+
+  - name: Create volume on target demo_volume_target_2
+    hpe3par_volume:
+      storage_system_ip: "{{ storage_system_ip2 }}"
+      storage_system_password: "{{ storage_system_password }}"
+      storage_system_username: "{{ storage_system_username }}"
+      state: present
+      volume_name: demo_volume_target_2
+      size: "{{ size }}"
+      size_unit: "{{ size_unit }}"
+      cpg: "{{ cpg }}"
+      snap_cpg: "{{ snap_cpg }}"           
+

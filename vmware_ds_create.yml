@@ -1,0 +1,66 @@
+- hosts: localhost
+
+  tasks:
+  
+    - name: Load Storage System Properties
+      include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
+
+    - name: Load Volume Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      
+    - name: Load Host Properties
+      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+
+    - name: Load VCenter Vars
+      include_vars: 'properties/vmware_properties/vcenter_server_properties.yml'
+
+      #environment:
+       # no_proxy: "{{storage_system_ip}}"
+    
+    - name: Create Volume "{{ volume_name }}"
+      hpe3par_volume:
+        storage_system_ip: "{{ storage_system_ip }}"
+        storage_system_username: "{{ storage_system_username }}"
+        storage_system_password: "{{ storage_system_password }}"
+        state: present
+        volume_name: "{{ volume_name }}"
+        cpg: "{{ cpg }}"
+        size: "{{ size }}"
+        size_unit: "{{ size_unit }}"
+
+    - name: "Get details of {{ volume_name }}"
+      hpe3par_volume_facts:
+        storage_system_ip: "{{ storage_system_ip }}"
+        storage_system_username: "{{ storage_system_username }}"
+        storage_system_password: "{{ storage_system_password }}"
+        name: "{{ volume_name }}"
+      register: volumewwn
+
+    - fail:
+        msg: "Found more volumes when quering with {{ storage_volume_name }}"
+      when: volumewwn.count != 1
+
+    - set_fact:
+        wwn: "{{ volumewwn.volumes[0].wwn }}"
+
+    - name: Create VLUN
+      hpe3par_vlun:
+        storage_system_ip: "{{ storage_system_ip }}"
+        storage_system_username: "{{ storage_system_username }}"
+        storage_system_password: "{{ storage_system_password }}"
+        state: export_volume_to_host
+        volume_name: "{{ volume_name }}"
+#        host_set_name: "{{ storage_cluster }}"
+        host_name: "{{ hostname }}"       
+        autolun: True
+
+    - name: Mount VMFS datastores to ESXi
+      vmware_host_datastore_san:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datastore_name: "{{ datastore_name }}"
+        volume_device_name: "{{ wwn }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+        validate_certs: False        
+      delegate_to: localhost
