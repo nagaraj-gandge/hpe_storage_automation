@@ -7,7 +7,7 @@ These Playbooks work for both 3PAR and Primera Seamlessly
 3) Delete Volume.
 
 ## Host Operations
-1)Create Host.
+1) Create Host.
 2) Delete Host.
 3) Create VLUN.
 
