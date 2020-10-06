@@ -10,12 +10,12 @@
       environment:
         no_proxy: "{{storage_system_ip}}"
 
-    - name: Grow Volume "{{ volume_name }} by "{{ updated_size }}" {{ size_unit }}"
+    - name: Grow Volume "{{ volume_name }} by "{{ size }}" {{ size_unit }}"
       hpe3par_volume:
         storage_system_ip: "{{ storage_system_ip }}"
         storage_system_username: "{{ storage_system_username }}"
         storage_system_password: "{{ storage_system_password }}"
         state: grow
         volume_name: "{{ volume_name }}"
-        size: "{{ updated_size }}"
+        size: "{{ size }}"
         size_unit: "{{ size_unit }}"
