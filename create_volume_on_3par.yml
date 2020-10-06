@@ -10,7 +10,7 @@
       environment:
         no_proxy: "{{ storage_system_ip }}"
 
-    - name: Create Volume "{{ volume_name }}"
+    - name: Create the Volume "{{ volume_name }}"
       hpe3par_volume:
         storage_system_ip: "{{ storage_system_ip }}"
         storage_system_username: "{{ storage_system_username }}"
