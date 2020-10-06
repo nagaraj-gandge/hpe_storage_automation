@@ -4,8 +4,8 @@
 
   tasks:
     
-  - name: Load Host Properties
-      include_vars: 'properties/host_properties/host_properties.yml'
+  #- name: Load Host Properties
+   #   include_vars: 'properties/host_properties/host_properties.yml'
 
     #environment:
        # no_proxy: "{{storage_system_ip}}"
