@@ -1,6 +1,9 @@
 #Host names to Create a VLUN
 
+# for Datasote Operations
 hostname: "SGH845VTZ8_ESXi"
 vlun_host_name: "SGH845VTZ8_ESXi"
 
 
+#for Primera Host Creation 
+host_name: "ansible_demo_host"
