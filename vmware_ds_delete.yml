@@ -2,8 +2,8 @@
 
   tasks:
   
-    - name: Load Storage System Properties
-      include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
+    #- name: Load Storage System Properties
+    #  include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
 
     - name: Load Volume Properties
       include_vars: 'properties/3par_volume_properties/volume_properties.yml'
@@ -11,7 +11,7 @@
     - name: Load Host Properties
       include_vars: 'properties/3par_volume_properties/volume_properties.yml'
 
-    - name: Load VCenter Vars
+    - name: Load VCenter Properties
       include_vars: 'properties/vmware_properties/vcenter_server_properties.yml'
 
       #environment:
