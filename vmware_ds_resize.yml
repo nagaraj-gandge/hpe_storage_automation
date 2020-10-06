@@ -1,8 +1,9 @@
 - hosts: localhost
+
   tasks:
-  
-   # - name: Load Storage System Properties
-   #   include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
+    
+    #- name: Load Storage System Vars
+    #  include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
 
     - name: Load Volume Properties
       include_vars: 'properties/3par_volume_properties/volume_properties.yml'
@@ -10,12 +11,12 @@
     - name: Load Host Properties
       include_vars: 'properties/3par_volume_properties/volume_properties.yml'
 
-    - name: Load VCenter Vars
+    - name: Load VCenter Properties
       include_vars: 'properties/vmware_properties/vcenter_server_properties.yml'
 
       #environment:
        # no_proxy: "{{storage_system_ip}}"
-  
+
     - name: Mount VMFS datastores to ESXi
       vmware_datastore_san_facts:
         hostname: '{{ vcenter_hostname }}'
@@ -34,7 +35,7 @@
         msg: "Unable to find 3PAR volume wwn of the datastore {{ vcenter_datastore }}"
       when: datastore_wwn is not defined
 
-    - name: "Find the 3PAR volume details for {{ vcenter_datastore }}"
+    - name: "Find the 3PAR volume details for {{ datastore_name }}"
       hpe3par_volume_facts:
         storage_system_ip: "{{ storage_system_ip }}"
         storage_system_username: "{{ storage_system_username }}"
@@ -66,9 +67,8 @@
         hostname: '{{ vcenter_hostname }}'
         username: '{{ vcenter_user }}'
         password: '{{ vcenter_pass }}'
-        datastore_name: '{{datastore_name }}'
+        datastore_name: '{{ datastore_name }}'
         volume_device_name: '{{ storage_wwn }}'
         esxi_hostname: '{{ esxi_hostname }}'
         validate_certs: False
       delegate_to: localhost
-
