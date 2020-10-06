@@ -1,18 +1,15 @@
 - hosts: localhost
   tasks:
-    - name: Load Storage System Properties
-      include_vars: 'properties/storege_system_properties/storage_system_properties.yml'
-
     - name: Load Volume properties
-      include_vars: 'properties/3par_volume_properties/volume_properties.yml'
+      include_vars: 'properties/host_properties/host_properties.yml'
 
       #environment:
        # no_proxy: "{{storage_system_ip}}"
 
-    - name: Delete Host "{{ dummy_host_name }}"
+    - name: Delete Host "{{ host_name }}"
       hpe3par_host:
         storage_system_ip: "{{ storage_system_ip }}"
         storage_system_username: "{{ storage_system_username }}"
         storage_system_password: "{{ storage_system_password }}"
         state: absent
-        host_name: "{{ dummy_host_name }}"
+        host_name: "{{ host_name }}"
