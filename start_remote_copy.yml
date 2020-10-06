@@ -15,4 +15,5 @@
 
   - debug:
       msg: "Priniting the Remote Copy 'Status' After the Start Opetation"
-      msg: "{{ result.output.remote_copy_sync_status}}"
+      #msg: "{{ result.output.remote_copy_sync_status}}"
+      msg: "{{ result }}"
