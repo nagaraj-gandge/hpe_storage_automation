@@ -58,7 +58,7 @@
         storage_system_password: "{{ storage_system_password }}"
         state: grow_to_size
         volume_name: "{{ volume_name }}"
-        size: "{{ updated_size }}"
+        size: "{{ size }}"
         size_unit: "{{ size_unit }}"
 
     - name: Mount VMFS datastores to ESXi
