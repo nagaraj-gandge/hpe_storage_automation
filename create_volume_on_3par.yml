@@ -20,4 +20,4 @@
         cpg: "{{ cpg }}"
         size: "{{ size }}"
         size_unit: "{{ size_unit }}"
-        snap_cpg: "{{ snap_cpg }}"
+        #snap_cpg: "{{ snap_cpg }}"
