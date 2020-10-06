@@ -1,0 +1,19 @@
+- hosts: localhost
+  tasks:
+  
+  - name: Load Storage System Vars
+    include_vars: 'properties/storage_system_properties.yml'
+
+- name: Start remote copy
+    hpe3par_remote_copy:
+      storage_system_ip: "{{ target_storage_system_ip }}"
+      storage_system_password: "{{ target_storage_system_username }}"
+      storage_system_username: "{{ target_storage_system_password }}"
+      remote_copy_group_name: "{{ rcg_name }}"
+      state: stop
+    register: result
+
+  - debug:
+      msg: "Priniting the Remote Copy 'Status' After the Start Opetation"
+      #msg: "{{ result.output.remote_copy_sync_status}}"
+      msg: "{{ result }}"
